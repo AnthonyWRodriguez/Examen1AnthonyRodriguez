@@ -42,4 +42,34 @@ fotografiasModel.addNew=({sent_title, sent_url, sent_thumbnailURL, sent_album} )
         return newfoto;
 }
 
+fotografiasModel.update=( ID, {new_url, new_thumbnailURL}) => {
+    var updatingfoto = fotografiasCollection.filter(
+    (o,i)=>{
+            return o.id === ID;
+        }
+    );
+    if (updatingfoto && updatingfoto.length > 0){
+        updatingfoto = updatingfoto[0];
+    }else{
+        return null;
+    }
+    var updatefoto={};
+    var newUpdatedCollection = fotografiasCollection.map(
+        (o,i)=>{
+            if (o.id === ID){
+                updatefoto = Object.assign({},
+                    o,
+                    { url:new_url,
+                      thumbnailURL:new_thumbnailURL }
+                );
+                return updatefoto;
+            }else{
+                return o;
+            }
+        }
+    );
+    fotografiasCollection = newUpdatedCollection;
+    return updatefoto;
+}
+
 module.exports = fotografiasModel;

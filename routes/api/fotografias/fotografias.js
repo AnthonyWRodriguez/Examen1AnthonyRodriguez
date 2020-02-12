@@ -9,8 +9,14 @@ router.get('/all',(req,res)=>{
 
 router.post('/new', (req,res)=>{
     var datosEnviados = req.body;
-    var newfoto = fotografiasModel.addNew(datosEnviados);
-    return res.status(200).json(newfoto);
+    var newFoto = fotografiasModel.addNew(datosEnviados);
+    return res.status(200).json(newFoto);
 }); 
+
+router.put('/upd/:id', (req, res)=>{
+    var id = parseInt(req.params.id);
+    var updFoto = fotografiasModel.update (id, req.body);
+    return res.status(200).json(updFoto);
+});
 
 module.exports = router;
