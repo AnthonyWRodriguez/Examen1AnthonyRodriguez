@@ -1,6 +1,26 @@
+var fs = require('fs');
+var fileToSave = 'security.json';
+
 var fotografiasModel = {};
 
 var fotografiasCollection = [];
+
+function writeToFile(){
+    var serializedJSON = JSON.stringify(fotografiasCollection);
+    fs.writeFileSync(fileToSave, serializedJSON, {encodeing:'utf8'});
+    return true;
+}
+
+function openFile(){
+    try{
+        var serializedJSON = fs.readFileSync(fileToSave, {encodeing:'utf8'});
+        fotografiasCollection = JSON.parse(serializedJSON);
+        return true;    
+    }
+    catch(e){
+        console.log(e);
+    }
+}
 
 var fotografiasTemplate = {
     id:"",
@@ -9,6 +29,8 @@ var fotografiasTemplate = {
     thumbnailURL:"",
     album:""
 }
+
+openFile();
 
 fotografiasModel.getAll = ()=>{
     return fotografiasCollection
@@ -39,6 +61,7 @@ fotografiasModel.addNew=({sent_title, sent_url, sent_thumbnailURL, sent_album} )
         });
         newfoto.id = fotografiasCollection.length + 1;
         fotografiasCollection.push(newfoto);
+        writeToFile();
         return newfoto;
 }
 
@@ -69,7 +92,20 @@ fotografiasModel.update=( ID, {new_url, new_thumbnailURL}) => {
         }
     );
     fotografiasCollection = newUpdatedCollection;
+    writeToFile();
     return updatefoto;
+}
+
+fotografiasModel.deleteByID = (ID)=>{
+    var newCollection = [];
+    newCollection = fotografiasCollection.filter(
+        (o)=>{
+            return o.id !== ID;
+        }
+    );
+    fotografiasCollection = newCollection;
+    writeToFile();    
+    return true;
 }
 
 module.exports = fotografiasModel;

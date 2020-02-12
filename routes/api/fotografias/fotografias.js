@@ -19,4 +19,10 @@ router.put('/upd/:id', (req, res)=>{
     return res.status(200).json(updFoto);
 });
 
+router.delete('/del/:id', (req, res)=>{
+    var id = parseInt( req.params.id );
+    fotografiasModel.deleteByID (id);
+    return res.status(200).json({"delete":true});
+});
+
 module.exports = router;
