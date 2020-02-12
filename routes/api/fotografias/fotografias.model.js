@@ -27,4 +27,19 @@ fotografiasCollection.push(
         })
 );
 
+fotografiasModel.addNew=({sent_title, sent_url, sent_thumbnailURL, sent_album} )=>{
+    var newfoto = Object.assign(
+        {},
+        fotografiasTemplate, 
+        {
+                title: sent_title,
+                url: sent_url,
+                thumbnailURL: sent_thumbnailURL,
+                album: sent_album
+        });
+        newfoto.id = fotografiasCollection.length + 1;
+        fotografiasCollection.push(newfoto);
+        return newfoto;
+}
+
 module.exports = fotografiasModel;
